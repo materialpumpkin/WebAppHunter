@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('post_category', function (Blueprint $table) {
-            $table->foreignId('user_id')->constraind();
+            $table->foreignId('category_id')->constraind();
             $table->foreignId('post_id')->constraind();
             $table->timestamps();
         });

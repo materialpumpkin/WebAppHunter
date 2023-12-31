@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('url');
             $table->foreignId('user_id')->constraind();
             $table->timestamps();
+            $table->softDeletes();
+            $table->string('ogp_url');
         });
     }
 

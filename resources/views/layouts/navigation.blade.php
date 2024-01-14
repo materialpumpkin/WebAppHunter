@@ -12,14 +12,14 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('index')" :active="request()->routeIs('index')">
                         {{ __('探す') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('create')" :active="request()->routeIs('create')">
+                    <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
                         {{ __('投稿する') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('posts.bookmark')" :active="request()->routeIs('posts.bookmark')">
+                        {{ __('ブックマーク') }}
                     </x-nav-link>
                 </div>
             </div>

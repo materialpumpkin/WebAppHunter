@@ -28,13 +28,28 @@
                 </input>
             </label>
             @endforeach
-            <p>その他　自由入力</p>
-            <input type="text" name="post[category]" placeholder="" value="{{ old('post.category') }}" />
-            <input type="text" name="post[category]" placeholder="" value="{{ old('post.category') }}" />
-            <input type="text" name="post[category]" placeholder="" value="{{ old('post.category') }}" />
+            <p>その他キーワードがあれば入力してください</p>
+            @csrf
+            <input name="tag[0]" value="" type="text" placeholder="" class="add--form"/>
+            <p class="add--btn">入力欄を追加する</p>
+            <div class="form--area"></div>
         </div>
         <input type="hidden" name="post[user_id]" value="{{ Auth::user()->id }}">
         <input type="hidden" name="post[ogp_url]" value="{{ Auth::user()->name }}">
         <input type="submit" value="投稿"/>
     </form>
+    <script>
+        const btnEl = document.querySelector('.add--btn');
+        console.log('test',btnEl)
+        btnEl.addEventListener('click',() => {
+            const inputAllEl = document.querySelectorAll('.add--form');
+            const formArea =  document.querySelector('.form--area');
+            const createInputEl = document.createElement('input');
+            createInputEl.type="text"
+            createInputEl.placeholder=""
+            createInputEl.className="add--form rounded-[10px]"
+            createInputEl.name=`tag[${inputAllEl.length}]`
+            formArea.appendChild(createInputEl);
+        })
+    </script>
 </x-app-layout>

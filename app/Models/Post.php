@@ -22,10 +22,22 @@ class Post extends Model
     
     public function getPaginateByLimit(int $limit_count = 5)
       {
-      return $this::with('categories')->orderBy('updated_at', 'DESC')->paginate($limit_count);
+      return $this::with('categories','user')->orderBy('updated_at', 'DESC')->paginate($limit_count);
       }
     public function categories()
       {
       return $this->belongsToMany(Category::class,'post_category');
+      }
+    public function bookmarks()
+      {
+      return $this->hasMany(Bookmark::class);
+      }
+    public function tags()
+      {
+      return $this->hasMany(Tag::class);
+      }
+    public function user()
+      {
+    return $this->belongsTo(User::class);
       }
 }

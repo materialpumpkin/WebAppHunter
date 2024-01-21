@@ -8,11 +8,11 @@
     <p class='url'>{{ $post->url }}</p>
     <h2>カテゴリ</h2>
     @foreach ($post->categories as $category)
-        <p class='body'>{{ $category->name }}</p>
+    <a href="/categories/{{ $category->id }}">{{ $category->name }}</a>
     @endforeach
     <h2>タグ</h2>
     @foreach ($post->tags as $tag)
-        <p class='body'>{{ $tag->name }}</p>
+        <p class='tag'>{{ $tag->name }}</p>
     @endforeach
     <div class="post-control">
         @if (!Auth::user()->is_bookmark($post->id))

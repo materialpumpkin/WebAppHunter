@@ -16,6 +16,7 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
     Route::get('/', 'index')->name('index');
     Route::post('/posts', 'store')->name('store');
     Route::get('/posts/create', 'create')->name('create');
+    Route::get('/posts/serch', 'serch')->name('serch');
     Route::get('/posts/bookmark', 'bookmark_posts')->name('posts.bookmark');
     Route::get('/posts/{post}', 'show')->name('show');
     Route::put('/posts/{post}', 'update')->name('update');

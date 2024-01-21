@@ -8,6 +8,8 @@ class CategoryController extends Controller
 {
    public function index(Category $category)
         {
-    return view('categories.index')->with(['posts' => $category->getByCategory()]);
+            $categories = Category::all();
+            return view('categories.index',compact('categories'))->with([
+                'posts' => $category->getByCategory()]);
         }
 }

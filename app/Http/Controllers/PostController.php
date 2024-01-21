@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Http\Requests\PostRequest;
@@ -11,20 +10,34 @@ use App\Models\User;
 
 class PostController extends Controller
 {
-    public function index(Post $post)
+    public function index(Post $post, Category $category)
     {
-        return view('posts.index')->with(['posts' => $post->getPaginateByLimit(10)]);
-        $client = new \GuzzleHttp\Client();
-        $url = 'https://teratail.com/api/v1/questions';
-        $response = $client->request(
-            'GET',
-            $url,
-            ['Bearer' => config('services.teratail.token')]
-        );
-        $questions = json_decode($response->getBody(), true);
-        return view('posts.index')->with([
-            'posts' => $post->getPaginateByLimit(),
-            'questions' => $questions['questions'],
+        $categories = Category::all();
+        
+         return view('posts.index')->with([
+            'posts' => $post->get(),
+            'categories'=>$categories
+        ]);
+    }
+
+    public function serch(Post $post, Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        $query = Post::query();
+        if (!empty($keyword)) {
+            $query->where(function ($query) use ($keyword) {
+                $query->where('title', 'LIKE', "%{$keyword}%")
+                      ->orWhereHas('tags', function ($query) use ($keyword) {
+                          $query->where('name', 'LIKE', "%{$keyword}%");
+                      });
+            });
+        }
+        $posts = $query->get();
+        
+        return view('posts.serch')->with([
+            'posts' => $posts,
+            'keyword' => $keyword
         ]);
     }
     public function show(Post $post)

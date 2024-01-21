@@ -19,6 +19,7 @@ class Post extends Model
     'user_id',
     'ogp_url'
     ];
+    protected $with=['categories'];
     
     public function getPaginateByLimit(int $limit_count = 5)
       {

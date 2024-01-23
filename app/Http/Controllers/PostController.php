@@ -8,14 +8,21 @@ use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 
+use GuzzleHttp\Client;
+use Symfony\Component\DomCrawler\Crawler;
+
+
 class PostController extends Controller
 {
     public function index(Post $post, Category $category)
     {
         $categories = Category::all();
+        $post = Post::withCount('bookmarks')
+                    ->orderBy('bookmarks_count','DESC')
+                    ->paginate(10);
         
          return view('posts.index')->with([
-            'posts' => $post->get(),
+            'posts' => $post,
             'categories'=>$categories
         ]);
     }
@@ -42,14 +49,25 @@ class PostController extends Controller
     }
     public function show(Post $post)
     {
-        return view('posts.show')->with(['post' => $post]);
+        $bookmarkCount = $post->bookmarks()->count();
+        return view('posts.show',compact('post', 'bookmarkCount'));
     }
    
     public function store (PostRequest $request, Post $post)
     {
-        $input_post=$request['post'];
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', $request->url);
+        $crawler = new Crawler($response->getBody()->getContents());
+
+        $ogp = $crawler->filter('meta[property="og:image"]')->attr('content');
+        $post->ogp_url = $ogp;
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->user_id = $request->user_id;
+        $post->url = $request->url;
+        $post->save();
+        
         $input_categories=$request->categories_array;
-        $post->fill($input_post)->save();
         foreach ($request->tag as $tagEl) {
             $tag = new Tag();
             $tag->name = $tagEl;
@@ -89,5 +107,9 @@ class PostController extends Controller
             'posts' => $posts
         ];
         return view('posts.bookmark')->with(['posts' => $posts]);
+    }
+    public function getOgp(Post $post)
+    {
+        
     }
 }

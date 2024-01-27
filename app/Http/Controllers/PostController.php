@@ -7,9 +7,10 @@ use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-
 use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
+use GuzzleHttp\Exception\RequestException;
+
 
 
 class PostController extends Controller
@@ -27,7 +28,7 @@ class PostController extends Controller
         ]);
     }
 
-    public function serch(Post $post, Request $request)
+    public function serch(Category $category, Request $request)
     {
         $keyword = $request->input('keyword');
 
@@ -40,12 +41,10 @@ class PostController extends Controller
                       });
             });
         }
-        $posts = $query->get();
+        $posts = $query->paginate(10);
+        $categories = Category::all();
         
-        return view('posts.serch')->with([
-            'posts' => $posts,
-            'keyword' => $keyword
-        ]);
+        return view('posts.serch', compact('posts', 'categories', 'keyword'));
     }
     public function show(Post $post)
     {
@@ -59,8 +58,55 @@ class PostController extends Controller
         $response = $client->request('GET', $request->url);
         $crawler = new Crawler($response->getBody()->getContents());
 
-        $ogp = $crawler->filter('meta[property="og:image"]')->attr('content');
-        $post->ogp_url = $ogp;
+        try {
+            $client = new \GuzzleHttp\Client();
+            $response = $client->request('GET', $request->url);
+            $crawler = new Crawler($response->getBody()->getContents());
+
+       $favicon = $crawler->filter('link[rel="icon"], link[rel="shortcut icon"]')->first();
+
+        if ($favicon->count() > 0) {
+            $faviconUrl = $favicon->attr('href');
+            
+            if (strpos($faviconUrl, '/') === 0) {
+                $faviconUrl = null;
+            }
+
+            $maxResolution = 0;
+            $maxResolutionUrl = $faviconUrl;
+            $links = $crawler->filter('link[rel="icon"], link[rel="shortcut icon"],link[rel="apple-touch-icon"]');
+            foreach ($links as $link) {
+                $sizeAttr = $link->getAttribute('sizes');
+                if ($sizeAttr) {
+                    preg_match('/(\d+)x(\d+)/', $sizeAttr, $matches);
+                    if (isset($matches[1]) && isset($matches[2])) {
+                        $resolution = max($matches[1], $matches[2]);
+                        if ($resolution > $maxResolution) {
+                            $maxResolution = $resolution;
+                            $maxResolutionUrl = $link->getAttribute('href');
+                        }
+                    }
+                }
+            }
+
+            $faviconUrl = $maxResolutionUrl;
+        } else {
+                $faviconUrl = null;
+            }
+        } catch (RequestException $e) {
+            $faviconUrl = null;
+        }
+            // $ogp = $crawler->filter('meta[property="og:image"]');
+        
+            // if ($ogp->count() > 0) {
+            //     $ogpUrl = $ogp->attr('content');
+            // } else {
+            //     $ogpUrl = null;
+            // }
+        // } catch (RequestException $e) {
+        //     $ogpUrl = null;
+        // }
+        $post->ogp_url = $faviconUrl;
         $post->title = $request->title;
         $post->body = $request->body;
         $post->user_id = $request->user_id;

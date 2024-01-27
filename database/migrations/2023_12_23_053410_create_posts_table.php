@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constraind();
             $table->timestamps();
             $table->softDeletes();
-            $table->string('ogp_url');
+            $table->string('ogp_url')->nullable();
         });
     }
 

@@ -25,6 +25,7 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
 });
 
 Route::get('/categories/{category}', [CategoryController::class,'index'])->middleware("auth");
+Route::get('/doubleSearch', [CategoryController::class,'doubleSearch'])->name('doubleSearch');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

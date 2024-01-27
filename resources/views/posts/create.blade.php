@@ -1,42 +1,53 @@
 <x-app-layout>
     <x-slot name="header">
-        おすすめのWEBアプリを投稿する
+        <div class="font-bold">おすすめのWEBアプリを投稿する</div>
     </x-slot>
-    <form action="/posts" method="POST">
-        @csrf
-        <div class="title">
-            <h2>WEBアプリ名（必須）</h2>
-            <input type="text" name="title" placeholder="" value="{{ old('post.title') }}"/>
-            <p class="title__error" style="color:red">{{ $errors->first('post.title') }}</p>
-        </div>
-        <div class="url">
-            <h2>URL（必須）</h2>
-            <input type="text" name="url" placeholder="https://~~" value="{{ old('post.url') }}"/>
-            <p class="title__error" style="color:red">{{ $errors->first('post.url') }}</p>
-        </div>
-        <div class="body">
-            <h2>WEBアプリの説明（必須）</h2>
-            <textarea name="body" placeholder="">{{ old('post.body') }}</textarea>
-            <p class="body__error" style="color:red">{{ $errors->first('post.body') }}</p>
-        </div>
-        <div class="category">
-            <h2>カテゴリを選択</h2>
-            @foreach($categories as $category)
-            <label>
-                <input type="checkbox" value="{{ $category->id }}" name="categories_array[]">
-                    {{$category->name}}
-                </input>
-            </label>
-            @endforeach
-            <p>その他キーワードがあれば入力してください</p>
+    <br>
+    <div class="mx-auto max-w-7xl">
+    <div class="ml-6">
+        <form action="/posts" method="POST">
             @csrf
-            <input name="tag[0]" value="" type="text" placeholder="" class="add--form"/>
-            <p class="add--btn">入力欄を追加する</p>
-            <div class="form--area"></div>
-        </div>
-        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-        <input type="submit" value="投稿"/>
-    </form>
+            <div class="title">
+                <h2 class="font-bold">WEBアプリ名（必須）</h2>
+                <input type="text" name="title" placeholder="" value="{{ old('post.title') }}"/>
+                <p class="title__error" style="color:red">{{ $errors->first('post.title') }}</p>
+            </div>
+            <div class="url">
+                <h2 class="font-bold">URL（必須）</h2>
+                <input type="text" name="url" placeholder="https://~~" value="{{ old('post.url') }}"/>
+                <p class="title__error" style="color:red">{{ $errors->first('post.url') }}</p>
+            </div>
+            <div class="body">
+                <h2 class="font-bold">WEBアプリの説明（必須）</h2>
+                <textarea name="body" placeholder="">{{ old('post.body') }}</textarea>
+                <p class="body__error" style="color:red">{{ $errors->first('post.body') }}</p>
+            </div><br>
+            <div class="category">
+                <h2 class="font-bold">カテゴリを選択（複数可）</h2>
+                @foreach($categories as $category)
+                <label>
+                    <input type="checkbox" value="{{ $category->id }}" name="categories_array[]">
+                        {{$category->name}}
+                    </input>
+                </label>
+                @endforeach
+                <br><br>
+                <div class="flex items-center">
+                    <p class="font-bold">その他キーワードがあれば入力してください</p>
+                    <div class="max-w-max">
+                        <p class="p-1 ml-4 rounded border bg-white hover:bg-yellow-300 add--btn">入力欄を追加する</p>
+                    </div>
+                </div>
+                @csrf
+                <input name="tag[0]" value="" type="text" placeholder="" class="add--form"/>
+                
+                <div class="form--area"></div>
+            </div>
+            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}"><br>
+            <input class="font-bold rounded border bg-cyan-500 hover:bg-yellow-300 inline-block p-2" type="submit" value=" 投稿する ">
+        </form>
+    </div>
+    </div>
     <script>
         const btnEl = document.querySelector('.add--btn');
         console.log('test',btnEl)
@@ -46,7 +57,7 @@
             const createInputEl = document.createElement('input');
             createInputEl.type="text"
             createInputEl.placeholder=""
-            createInputEl.className="add--form rounded-[10px]"
+            createInputEl.className="add--form"
             createInputEl.name=`tag[${inputAllEl.length}]`
             formArea.appendChild(createInputEl);
         })

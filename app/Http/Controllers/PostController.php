@@ -54,48 +54,48 @@ class PostController extends Controller
    
     public function store (PostRequest $request, Post $post)
     {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', $request->url);
-        $crawler = new Crawler($response->getBody()->getContents());
+        // $client = new \GuzzleHttp\Client();
+        // $response = $client->request('GET', $request->url);
+        // $crawler = new Crawler($response->getBody()->getContents());
 
         try {
             $client = new \GuzzleHttp\Client();
             $response = $client->request('GET', $request->url);
             $crawler = new Crawler($response->getBody()->getContents());
 
-       $favicon = $crawler->filter('link[rel="icon"], link[rel="shortcut icon"]')->first();
-
-        if ($favicon->count() > 0) {
-            $faviconUrl = $favicon->attr('href');
-            
-            if (strpos($faviconUrl, '/') === 0) {
-                $faviconUrl = null;
-            }
-
-            $maxResolution = 0;
-            $maxResolutionUrl = $faviconUrl;
-            $links = $crawler->filter('link[rel="icon"], link[rel="shortcut icon"],link[rel="apple-touch-icon"]');
-            foreach ($links as $link) {
-                $sizeAttr = $link->getAttribute('sizes');
-                if ($sizeAttr) {
-                    preg_match('/(\d+)x(\d+)/', $sizeAttr, $matches);
-                    if (isset($matches[1]) && isset($matches[2])) {
-                        $resolution = max($matches[1], $matches[2]);
-                        if ($resolution > $maxResolution) {
-                            $maxResolution = $resolution;
-                            $maxResolutionUrl = $link->getAttribute('href');
+           $favicon = $crawler->filter('link[rel="icon"], link[rel="shortcut icon"]')->first();
+    
+            if ($favicon->count() > 0) {
+                $faviconUrl = $favicon->attr('href');
+                
+                if (strpos($faviconUrl, '/') === 0) {
+                    $faviconUrl = null;
+                }
+    
+                $maxResolution = 0;
+                $maxResolutionUrl = $faviconUrl;
+                $links = $crawler->filter('link[rel="icon"], link[rel="shortcut icon"],link[rel="apple-touch-icon"]');
+                foreach ($links as $link) {
+                    $sizeAttr = $link->getAttribute('sizes');
+                    if ($sizeAttr) {
+                        preg_match('/(\d+)x(\d+)/', $sizeAttr, $matches);
+                        if (isset($matches[1]) && isset($matches[2])) {
+                            $resolution = max($matches[1], $matches[2]);
+                            if ($resolution > $maxResolution) {
+                                $maxResolution = $resolution;
+                                $maxResolutionUrl = $link->getAttribute('href');
+                            }
                         }
                     }
                 }
-            }
-
-            $faviconUrl = $maxResolutionUrl;
-        } else {
+    
+                $faviconUrl = $maxResolutionUrl;
+            } else {
+                    $faviconUrl = null;
+                }
+            } catch (RequestException $e) {
                 $faviconUrl = null;
             }
-        } catch (RequestException $e) {
-            $faviconUrl = null;
-        }
             // $ogp = $crawler->filter('meta[property="og:image"]');
         
             // if ($ogp->count() > 0) {

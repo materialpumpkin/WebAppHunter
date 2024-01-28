@@ -51,7 +51,7 @@ class User extends Authenticatable
     }
     public function is_bookmark($post)
     {
-        return $this->bookmark_posts()->where('post_id', $post)->exists();
+        return $this->bookmark_posts()->where('post_id', $post->id)->exists();
     }
     public function posts()   
       {

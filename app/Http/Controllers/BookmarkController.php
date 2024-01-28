@@ -12,7 +12,7 @@ class BookmarkController extends Controller
         if (!$user->is_bookmark($post)) {
             $user->bookmark_posts()->attach($post);
         }
-        return back();
+        return redirect('/posts/'.$post->id);
     }
     public function destroy(Post $post) {
         

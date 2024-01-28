@@ -54,10 +54,6 @@ class PostController extends Controller
    
     public function store (PostRequest $request, Post $post)
     {
-        // $client = new \GuzzleHttp\Client();
-        // $response = $client->request('GET', $request->url);
-        // $crawler = new Crawler($response->getBody()->getContents());
-
         try {
             $client = new \GuzzleHttp\Client();
             $response = $client->request('GET', $request->url);
@@ -91,11 +87,17 @@ class PostController extends Controller
     
                 $faviconUrl = $maxResolutionUrl;
             } else {
+                $ogpImage = $crawler->filter('meta[property="og:image"]');
+                if ($ogpImage->count() > 0) {
+                    $faviconUrl = $ogpImage->attr('content');
+                } else {
                     $faviconUrl = null;
                 }
+            }
             } catch (RequestException $e) {
                 $faviconUrl = null;
             }
+            
             // $ogp = $crawler->filter('meta[property="og:image"]');
         
             // if ($ogp->count() > 0) {
@@ -116,9 +118,12 @@ class PostController extends Controller
         $input_categories=$request->categories_array;
         foreach ($request->tag as $tagEl) {
             $tag = new Tag();
-            $tag->name = $tagEl;
-            $tag->post_id = $post->id;
-            $tag->save();
+            
+            if($tagEl !== null){
+                $tag->name = $tagEl;
+                $tag->post_id = $post->id;
+                $tag->save();
+            }
         }
         $post->categories()->attach($input_categories);
         return redirect('/posts/' . $post->id);

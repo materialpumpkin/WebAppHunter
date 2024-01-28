@@ -27,14 +27,12 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
 Route::get('/categories/{category}', [CategoryController::class,'index'])->middleware("auth");
 Route::get('/doubleSearch', [CategoryController::class,'doubleSearch'])->name('doubleSearch');
 
-Route::post('/bookmark/{post}', [BookmarkController::class, 'store'])->name('bookmark.store');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-    Route::delete('/posts/{post}/unbookmark', [BookmarkController::class, 'destroy'])->name('bookmark.destroy');
+    Route::post('/bookmark/{post}', [BookmarkController::class, 'store'])->name('bookmark.store');
+    Route::delete('/unbookmark/{post}', [BookmarkController::class, 'destroy'])->name('bookmark.destroy');
     
 });
 

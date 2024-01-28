@@ -46,7 +46,7 @@
                 </form>
             @else
                 <div class="font-bold">ブックマーク登録中 → </div>
-                <form action="{{ route('bookmark.destroy', $post) }}" method="post">
+                <form action="{{"/unbookmark/".$post->id}}" method="post">
                     @csrf
                     @method('DELETE')
                     <button class="p-1 rounded border bg-white hover:bg-yellow-300">解除する</button>

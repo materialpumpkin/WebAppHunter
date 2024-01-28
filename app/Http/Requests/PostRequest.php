@@ -11,6 +11,7 @@ class PostRequest extends FormRequest
         return [
             'title'=>'required|string|max:100',
             'body'=>'required|string|max:4000',
+            'url' => ['required', 'url', 'starts_with:https://'],
         ];
     }
 }

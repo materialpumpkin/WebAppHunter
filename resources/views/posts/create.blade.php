@@ -15,7 +15,7 @@
             <div class="url">
                 <h2 class="font-bold">URL（必須）</h2>
                 <input type="text" name="url" placeholder="https://~~" value="{{ old('post.url') }}"/>
-                <p class="title__error" style="color:red">{{ $errors->first('post.url') }}</p>
+                <p class="url__error" style="color:red">{{ $errors->first('post.url') }}</p>
             </div>
             <div class="body">
                 <h2 class="font-bold">WEBアプリの説明（必須）</h2>

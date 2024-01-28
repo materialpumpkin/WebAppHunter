@@ -49,9 +49,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Post::class, 'bookmarks', 'user_id', 'post_id');
     }
-    public function is_bookmark($post)
+    public function is_bookmark($id)
     {
-        return $this->bookmark_posts()->where('post_id', $post->id)->exists();
+        return $this->bookmark_posts()->where('post_id', $id)->exists();
     }
     public function posts()   
       {

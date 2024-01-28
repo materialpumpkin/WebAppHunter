@@ -27,7 +27,7 @@ Route::controller(PostController::class)->middleware(['auth'])->group(function()
 Route::get('/categories/{category}', [CategoryController::class,'index'])->middleware("auth");
 Route::get('/doubleSearch', [CategoryController::class,'doubleSearch'])->name('doubleSearch');
 
-Route::post('/posts/{post}/bookmark', [BookmarkController::class, 'store'])->name('bookmark.store');
+Route::post('/bookmark/{post}', [BookmarkController::class, 'store'])->name('bookmark.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

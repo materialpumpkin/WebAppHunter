@@ -40,7 +40,7 @@
         <div class="flex items-center">
             @if (!Auth::user()->is_bookmark($post->id))
                 <div class="font-bold">ブックマーク未登録 → </div>
-                <form action={{"/posts/".$post->id."/bookmark"}} method="post">
+                <form action="{{"/bookmark/".$post->id}}" method="post">
                     @csrf
                     <button class="p-1 rounded border bg-orange-500 hover:bg-yellow-300">登録する</button>
                 </form>

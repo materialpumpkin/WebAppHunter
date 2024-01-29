@@ -9,18 +9,18 @@
             @csrf
             <div class="title">
                 <h2 class="font-bold">WEBアプリ名（必須）</h2>
-                <input type="text" name="title" placeholder="" value="{{ old('post.title') }}"/>
-                <p class="title__error" style="color:red">{{ $errors->first('post.title') }}</p>
+                <input type="text" name="title" placeholder="" value="{{ old('title') }}"/>
+                <p class="title__error" style="color:red">{{ $errors->first('title') }}</p>
             </div>
             <div class="url">
                 <h2 class="font-bold">URL（必須）</h2>
-                <input type="text" name="url" placeholder="https://~~" value="{{ old('post.url') }}"/>
-                <p class="url__error" style="color:red">{{ $errors->first('post.url') }}</p>
+                <input type="text" name="url" placeholder="https://~~" value="{{ old('url') }}"/>
+                <p class="url__error" style="color:red">{{ $errors->first('url') }}</p>
             </div>
             <div class="body">
                 <h2 class="font-bold">WEBアプリの説明（必須）</h2>
-                <textarea name="body" placeholder="">{{ old('post.body') }}</textarea>
-                <p class="body__error" style="color:red">{{ $errors->first('post.body') }}</p>
+                <textarea name="body" placeholder="">{{ old('body') }}</textarea>
+                <p class="body__error" style="color:red">{{ $errors->first('body') }}</p>
             </div><br>
             <div class="category">
                 <h2 class="font-bold">カテゴリを選択（複数可）</h2>

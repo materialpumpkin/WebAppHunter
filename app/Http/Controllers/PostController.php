@@ -57,7 +57,7 @@ class PostController extends Controller
         try {
             $client = new \GuzzleHttp\Client();
             $response = $client->request('GET', $request->url);
-            $crawler = new Crawler($response->getBody()->read(1956)->getContents());
+            $crawler = new Crawler($response->getBody()->read(1957)->getContents());
 
            $favicon = $crawler->filter('link[rel="icon"], link[rel="shortcut icon"]')->first();
     

@@ -4,7 +4,6 @@
     </x-slot>
     <br>
     <div class="mx-auto max-w-7xl">
-    <br><br>
         @forelse ($posts as $post)
             <div class='post flex h-20 items-center max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white overflow-hidden shadow-sm sm:rounded-lg'>
                 @if (strpos($post->ogp_url, '/') === 0)

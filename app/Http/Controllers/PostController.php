@@ -63,14 +63,10 @@ class PostController extends Controller
     
             if ($favicon->count() > 0) {
                 $faviconUrl = $favicon->attr('href');
-                
-                if (strpos($faviconUrl, '/') === 0) {
-                    $faviconUrl = null;
-                }
     
                 $maxResolution = 0;
                 $maxResolutionUrl = $faviconUrl;
-                $links = $crawler->filter('link[rel="icon"], link[rel="shortcut icon"],link[rel="apple-touch-icon"]');
+                $links = $crawler->filter('link[rel="icon"], link[rel="shortcut icon"]');
                 foreach ($links as $link) {
                     $sizeAttr = $link->getAttribute('sizes');
                     if ($sizeAttr) {
@@ -86,6 +82,10 @@ class PostController extends Controller
                 }
     
                 $faviconUrl = $maxResolutionUrl;
+                if (strpos($faviconUrl, '/') === 0) {
+                    $faviconUrl = null;
+                }
+                
             } else {
                 $ogpImage = $crawler->filter('meta[property="og:image"]');
                 if ($ogpImage->count() > 0) {

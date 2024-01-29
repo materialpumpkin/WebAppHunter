@@ -37,10 +37,7 @@
     <h2 class="rounded border bg-gradient-to-r from-white to-blue-200 font-bold items-center p-2">　おすすめの投稿</h2><br>
         @foreach ($posts as $post)
             <div class='post flex h-20 items-center max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white overflow-hidden shadow-sm sm:rounded-lg'>
-                @if (strpos($post->ogp_url, '/') === 0)
-                    <div class="flex-shrink-0 flex w-16 h-16 items-center justify-center bg-yellow-200">▶
-                    </div>
-                @elseif($post->ogp_url)    
+                @if($post->ogp_url)    
                     <img src="{{ $post->ogp_url }}" class="flex-shrink-0 w-16">
                 @else
                     <div class="flex-shrink-0 flex w-16 h-16 items-center justify-center bg-cyan-200">▶

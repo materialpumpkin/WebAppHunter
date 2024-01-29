@@ -6,10 +6,7 @@
     <div class="mx-auto max-w-7xl">
     <div class="ml-4">
         <div class="flex items-center">
-            @if (strpos($post->ogp_url, '/') === 0)
-                <div class="flex w-32 h-32 items-center justify-center bg-yellow-200 font-bold">{{ $post->title }}
-                </div>
-            @elseif($post->ogp_url)    
+            @if($post->ogp_url)    
                 <img src="{{ $post->ogp_url }}" class="w-32">
             @else
                 <div class="flex w-32 h-32 items-center justify-center bg-cyan-200 font-bold">{{ $post->title }}
